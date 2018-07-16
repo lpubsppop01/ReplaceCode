@@ -1,0 +1,10 @@
+*.user
+*.suo
+bin/
+obj/
+**/packages/*
+!**/packages/repositories.config
+.vs
+launchSettings.json
+ReplaceCode-win-x64.zip
+ReplaceCode-win-x64/
