@@ -1,0 +1,14 @@
+version: 0.0.{build}
+image: Visual Studio 2017
+before_build:
+  - ps: dotnet restore ReplaceCode.sln -s https://api.nuget.org/v3/index.json -s https://powershell.myget.org/F/powershell-core/api/v3/index.json
+build_script:
+  - ps: dotnet build -c Publish ReplaceCode.sln
+  - ps: dotnet publish -c Publish -r win-x64 -o ..\ReplaceCode-win-x64 ReplaceCode.sln
+  - ps: dotnet publish -c Publish -r linux-x64 -o ..\ReplaceCode-linux-x64 ReplaceCode.sln
+after_build:
+  - 7z a ReplaceCode-win-x64.zip ReplaceCode-win-x64
+  - 7z a ReplaceCode-linux-x64.zip ReplaceCode-linux-x64
+artifacts:
+  - path: ReplaceCode-win-x64.zip
+  - path: ReplaceCode-linux-x64.zip
