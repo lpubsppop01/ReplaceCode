@@ -1,10 +1,18 @@
 # Replace Code
 
+[![Build status](https://ci.appveyor.com/api/projects/status/3ct2c1ti3th97qpd?svg=true)](https://ci.appveyor.com/project/lpubsppop01/replacecode)
+
 A PowerShell module to replace AST node and correspondng source code.
 
 ## Features
 
 TODO
+
+## Download
+
+Latest Build:
+- [ReplaceCode-win-x64.zip](https://ci.appveyor.com/api/projects/lpubsppop01/replacecode/artifacts/ReplaceCode-win-x64.zip)
+- [ReplaceCode-linux-x64.zip](https://ci.appveyor.com/api/projects/lpubsppop01/replacecode/artifacts/ReplaceCode-linux-x64.zip)
 
 ## Author
 
