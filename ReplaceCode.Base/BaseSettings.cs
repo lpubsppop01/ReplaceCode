@@ -13,7 +13,10 @@ namespace Lpubsppop01.ReplaceCode
         #region Properties
 
         [DataMember(Name = "editor")]
-        public string Editor { get; set; } = "code";
+        public string Editor { get; set; } = "code -g";
+
+        [DataMember(Name = "goToLine")]
+        public bool GoToLine { get; set; } = true;
 
         #endregion
     }

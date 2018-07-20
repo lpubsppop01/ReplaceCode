@@ -91,13 +91,27 @@ namespace Lpubsppop01.ReplaceCode.Base
 
         public void Open()
         {
+            var paths = new List<string>();
+            foreach (var src in node.Sources(ast.SourceMap))
+            {
+                if (settings.GoToLine)
+                {
+                    var fileInfo = new TextFileInfo(src.FilePath(ast.SourceMap));
+                    int line = fileInfo.ReadToEnd().Substring(0, src.ContentRange.Start).Split(fileInfo.NewLine).Count();
+                    paths.Add($"{src.FilePath(ast.SourceMap)}:{line}");
+                }
+                else
+                {
+                    paths.Add(src.FilePath(ast.SourceMap));
+                }
+            }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Process.Start("cmd.exe", "/c " + string.Join(' ', FilePaths.Prepend(settings.Editor)));
+                Process.Start("cmd.exe", "/c " + string.Join(' ', paths.Prepend(settings.Editor)));
             }
             else
             {
-                Process.Start("bash", "-c " + string.Join(' ', FilePaths.Prepend(settings.Editor)));
+                Process.Start("bash", "-c " + string.Join(' ', paths.Prepend(settings.Editor)));
 
             }
         }
