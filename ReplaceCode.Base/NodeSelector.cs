@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Lpubsppop01.ReplaceCode.Base
@@ -11,11 +13,13 @@ namespace Lpubsppop01.ReplaceCode.Base
 
         Node node;
         AST ast;
+        BaseSettings settings;
 
-        public NodeSelector(Node node, AST ast)
+        public NodeSelector(Node node, AST ast, BaseSettings settings = null)
         {
             this.node = node;
             this.ast = ast;
+            this.settings = settings != null ? settings : new BaseSettings();
         }
 
         #endregion
@@ -36,11 +40,11 @@ namespace Lpubsppop01.ReplaceCode.Base
 
         #region Traversal Methods
 
-        public NodeSelector Parent() => new NodeSelector(node.Parent(ast), ast);
+        public NodeSelector Parent() => new NodeSelector(node.Parent(ast), ast, settings);
 
         IEnumerable<NodeSelector> _AncestorsOrSelf(Node self)
         {
-            yield return new NodeSelector(self, ast);
+            yield return new NodeSelector(self, ast, settings);
             var parent = self.Parent(ast);
             if (parent == null || parent == ast.Root) yield break;
             foreach (var parentResult in _AncestorsOrSelf(parent))
@@ -54,11 +58,11 @@ namespace Lpubsppop01.ReplaceCode.Base
         public IEnumerable<NodeSelector> Ancestors() => _AncestorsOrSelf(node.Parent(ast));
 
         public IEnumerable<NodeSelector> Children() =>
-            node.Children(ast).Select(c => new NodeSelector(c, ast));
+            node.Children(ast).Select(c => new NodeSelector(c, ast, settings));
 
         IEnumerable<NodeSelector> _DescendantsOrSelf(Node self)
         {
-            yield return new NodeSelector(self, ast);
+            yield return new NodeSelector(self, ast, settings);
             foreach (var child in self.Children(ast))
             {
                 foreach (var childResult in _DescendantsOrSelf(child))
@@ -84,6 +88,19 @@ namespace Lpubsppop01.ReplaceCode.Base
 
         public NodeGenerateReplaced GenerateReplaced(string pattern, string replacement) =>
             new NodeGenerateReplaced(node, ast, () => OnEdited(ast), pattern, replacement);
+
+        public void Open()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Process.Start("cmd.exe", "/c " + string.Join(' ', FilePaths.Prepend(settings.Editor)));
+            }
+            else
+            {
+                Process.Start("bash", "-c " + string.Join(' ', FilePaths.Prepend(settings.Editor)));
+
+            }
+        }
 
         static void OnEdited(AST ast)
         {

@@ -1,14 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Text;
 
 namespace Lpubsppop01.ReplaceCode
 {
-    class AppPathSet
+    class AppEnvironment
     {
         #region Instance
 
-        public static AppPathSet Current { get; private set; } = new AppPathSet();
+        public static AppEnvironment Current { get; private set; } = new AppEnvironment();
 
         #endregion
 
@@ -84,7 +87,9 @@ namespace Lpubsppop01.ReplaceCode
             }
         }
 
-        public string ASTCacheJsonPath => Path.Combine(MyLocalAppDataPath, "ast-cache.json");
+        public string CacheJsonPath => Path.Combine(MyLocalAppDataPath, "cache.json");
+
+        public string SettingsJsonPath => Path.Combine(MyLocalAppDataPath, "paths.json");
 
         #endregion
     }

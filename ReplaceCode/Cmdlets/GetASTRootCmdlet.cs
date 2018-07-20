@@ -20,7 +20,7 @@ namespace Lpubsppop01.ReplaceCode.Cmdlets
                 if (AppCache.Current.LastASTPath == null) throw new ArgumentNullException();
                 actualAST = AST.Load(AppCache.Current.LastASTPath);
             }
-            var selector = new NodeSelector(actualAST.Root, actualAST);
+            var selector = new NodeSelector(actualAST.Root, actualAST, AppSettings.Current);
             WriteObject(selector);
         }
     }

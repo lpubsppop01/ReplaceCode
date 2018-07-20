@@ -49,7 +49,7 @@ namespace Lpubsppop01.ReplaceCode
             if (options.HasFlag(AppOptions.UseCache))
             {
                 var astName = Guid.NewGuid().ToString() + ".json";
-                var astPath = Path.Combine(AppPathSet.Current.MyLocalAppDataPath, astName);
+                var astPath = Path.Combine(AppEnvironment.Current.MyLocalAppDataPath, astName);
                 rootActor.Result.Save(astPath);
                 AppCache.Current.SourcePathToASTPath[cacheKey] = astPath;
                 AppCache.Current.LastASTPath = astPath;
@@ -81,7 +81,7 @@ namespace Lpubsppop01.ReplaceCode
             if (options.HasFlag(AppOptions.UseCache))
             {
                 var astName = Guid.NewGuid().ToString() + ".json";
-                var astPath = Path.Combine(AppPathSet.Current.MyLocalAppDataPath, astName);
+                var astPath = Path.Combine(AppEnvironment.Current.MyLocalAppDataPath, astName);
                 rootActor.Result.Save(astPath);
                 //ASTCache.Current.SourcePathToASTPath[cacheKey] = astPath;
                 AppCache.Current.LastASTPath = astPath;
@@ -110,8 +110,8 @@ namespace Lpubsppop01.ReplaceCode
 
         public void ClearASTCache()
         {
-            if (!Directory.Exists(AppPathSet.Current.MyLocalAppDataPath)) return;
-            foreach (var path in Directory.EnumerateFiles(AppPathSet.Current.MyLocalAppDataPath))
+            if (!Directory.Exists(AppEnvironment.Current.MyLocalAppDataPath)) return;
+            foreach (var path in Directory.EnumerateFiles(AppEnvironment.Current.MyLocalAppDataPath))
             {
                 File.Delete(path);
             }

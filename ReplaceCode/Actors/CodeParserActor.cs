@@ -9,14 +9,14 @@ namespace Lpubsppop01.ReplaceCode.Actors
 
         public CodeParserActor()
         {
-            var paths = AppPathSet.Current;
-            if (paths.CSharpParserPath.EndsWith(".dll", ignoreCase: true, culture: null))
+            var env = AppEnvironment.Current;
+            if (env.CSharpParserPath.EndsWith(".dll", ignoreCase: true, culture: null))
             {
-                parser = new CodeParser("dotnet", paths.CSharpParserPath);
+                parser = new CodeParser("dotnet", env.CSharpParserPath);
             }
-            else if (paths.CSharpParserPath.EndsWith(".exe", ignoreCase: true, culture: null))
+            else if (env.CSharpParserPath.EndsWith(".exe", ignoreCase: true, culture: null))
             {
-                parser = new CodeParser(paths.CSharpParserPath, "");
+                parser = new CodeParser(env.CSharpParserPath, "");
             }
         }
 
