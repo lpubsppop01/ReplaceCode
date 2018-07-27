@@ -116,5 +116,29 @@ namespace Lpubsppop01.ReplaceCode
                 File.Delete(path);
             }
         }
+
+        public void AddWorkspace(string name)
+        {
+            if (AppSettings.Current.Workspaces.Any(w => w.Name == name)) throw new ArgumentException();
+            var newWorkspace = new Workspace { Name = name, Paths = new string[0] };
+            AppSettings.Current.Workspaces = AppSettings.Current.Workspaces.Append(newWorkspace).ToArray();
+        }
+
+        public void RemoveWorkspace(string name)
+        {
+            var iMatched = Array.FindIndex(AppSettings.Current.Workspaces, (w) => w.Name == name);
+            if (iMatched == -1) throw new ArgumentException();
+            var matched = AppSettings.Current.Workspaces[iMatched];
+            AppSettings.Current.Workspaces = AppSettings.Current.Workspaces.Where(w => w != matched).ToArray();
+            if (AppSettings.Current.CurrentWorkspaceIndex > iMatched)
+            {
+                --AppSettings.Current.CurrentWorkspaceIndex;
+            }
+        }
+
+        public Workspace[] GetWorkspaces()
+        {
+            return AppSettings.Current.Workspaces;
+        }
     }
 }
