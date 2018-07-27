@@ -94,7 +94,7 @@ namespace Lpubsppop01.ReplaceCode.Base
             var paths = new List<string>();
             foreach (var src in node.Sources(ast.SourceMap))
             {
-                if (settings.GoToLine)
+                if (settings.PassesLineNumberToEditor)
                 {
                     var fileInfo = new TextFileInfo(src.FilePath(ast.SourceMap));
                     int line = fileInfo.ReadToEnd().Substring(0, src.ContentRange.Start).Split(fileInfo.NewLine).Count();
@@ -107,11 +107,11 @@ namespace Lpubsppop01.ReplaceCode.Base
             }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Process.Start("cmd.exe", "/c " + string.Join(' ', paths.Prepend(settings.Editor)));
+                Process.Start("cmd.exe", "/c " + string.Join(' ', paths.Prepend(settings.EditorCommand)));
             }
             else
             {
-                Process.Start("bash", "-c " + string.Join(' ', paths.Prepend(settings.Editor)));
+                Process.Start("bash", "-c " + string.Join(' ', paths.Prepend(settings.EditorCommand)));
 
             }
         }
